@@ -522,9 +522,164 @@
         }
 
         @media (max-width: 768px) {
-            nav, .header-actions {
-                display: none;
+            .exchange-form {
+                padding: 20px;
             }
+
+            .exchange-input-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .swap-btn {
+                align-self: center;
+            }
+        }
+
+        /* Exchange Rate Section */
+        .exchange-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-secondary) 100%);
+        }
+
+        .exchange-card {
+            background: var(--dark-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .exchange-card h2 {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .exchange-card > p {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .exchange-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .exchange-input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .exchange-field {
+            flex: 1;
+        }
+
+        .exchange-field label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .exchange-field select,
+        .exchange-field input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .exchange-field select:focus,
+        .exchange-field input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .exchange-field input {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .swap-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: var(--dark-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s;
+            align-self: flex-end;
+        }
+
+        .swap-btn:hover {
+            background: var(--primary-dark);
+            transform: rotate(180deg);
+        }
+
+        .exchange-result {
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .exchange-result .converted-amount {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .exchange-result .rate-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .exchange-result .rate-info span {
+            color: var(--text-primary);
+        }
+
+        .exchange-loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+        }
+
+        .exchange-loading.active {
+            display: block;
+        }
+
+        .exchange-error {
+            display: none;
+            text-align: center;
+            padding: 15px;
+            background: rgba(246, 70, 93, 0.1);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            color: var(--danger);
+            font-size: 14px;
+        }
+
+        .exchange-error.active {
+            display: block;
+        }
 
             .hamburger {
                 display: block;
@@ -581,6 +736,7 @@
             </a>
             <nav>
                 <a href="#markets">Markets</a>
+                <a href="#exchange">Exchange</a>
                 <a href="#features">Features</a>
                 <a href="#earn">Earn</a>
                 <a href="#learn">Learn</a>
@@ -614,6 +770,7 @@
         </div>
         <nav>
             <a href="#markets">Markets</a>
+            <a href="#exchange">Exchange</a>
             <a href="#features">Features</a>
             <a href="#earn">Earn</a>
             <a href="#learn">Learn</a>
@@ -743,6 +900,70 @@
             </div>
         </section>
 
+        <section class="exchange-section" id="exchange">
+            <div class="container">
+                <div class="exchange-card">
+                    <h2>Crypto Converter</h2>
+                    <p>Check live exchange rates for cryptocurrencies</p>
+                    <div class="exchange-form">
+                        <div class="exchange-input-group">
+                            <div class="exchange-field">
+                                <label for="fromCurrency">From</label>
+                                <select id="fromCurrency">
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="BNB">BNB (BNB)</option>
+                                    <option value="SOL">Solana (SOL)</option>
+                                    <option value="XRP">XRP (XRP)</option>
+                                    <option value="DOGE">Dogecoin (DOGE)</option>
+                                    <option value="ADA">Cardano (ADA)</option>
+                                    <option value="AVAX">Avalanche (AVAX)</option>
+                                    <option value="DOT">Polkadot (DOT)</option>
+                                    <option value="MATIC">Polygon (MATIC)</option>
+                                    <option value="USD" selected>US Dollar (USD)</option>
+                                    <option value="EUR">Euro (EUR)</option>
+                                    <option value="GBP">British Pound (GBP)</option>
+                                </select>
+                            </div>
+                            <button class="swap-btn" id="swapCurrencies" aria-label="Swap currencies">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            <div class="exchange-field">
+                                <label for="toCurrency">To</label>
+                                <select id="toCurrency">
+                                    <option value="BTC">Bitcoin (BTC)</option>
+                                    <option value="ETH">Ethereum (ETH)</option>
+                                    <option value="BNB">BNB (BNB)</option>
+                                    <option value="SOL">Solana (SOL)</option>
+                                    <option value="XRP">XRP (XRP)</option>
+                                    <option value="DOGE">Dogecoin (DOGE)</option>
+                                    <option value="ADA">Cardano (ADA)</option>
+                                    <option value="AVAX">Avalanche (AVAX)</option>
+                                    <option value="DOT">Polkadot (DOT)</option>
+                                    <option value="MATIC">Polygon (MATIC)</option>
+                                    <option value="USD" selected>US Dollar (USD)</option>
+                                    <option value="EUR">Euro (EUR)</option>
+                                    <option value="GBP">British Pound (GBP)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="exchange-field">
+                            <label for="amount">Amount</label>
+                            <input type="number" id="amount" placeholder="Enter amount" value="1" min="0" step="any">
+                        </div>
+                        <div class="exchange-result" id="result">
+                            <div class="converted-amount" id="convertedAmount">$97,245.32</div>
+                            <div class="rate-info">1 <span id="fromCode">BTC</span> = <span id="exchangeRate">97,245.32</span> <span id="toCode">USD</span></div>
+                        </div>
+                        <div class="exchange-loading" id="loading">
+                            <i class="fas fa-spinner fa-spin"></i> Loading exchange rate...
+                        </div>
+                        <div class="exchange-error" id="error"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="features" id="features">
             <div class="container">
                 <div class="section-header">
@@ -861,6 +1082,119 @@
 
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Exchange Rate Calculator
+        const fromCurrency = document.getElementById('fromCurrency');
+        const toCurrency = document.getElementById('toCurrency');
+        const amountInput = document.getElementById('amount');
+        const swapBtn = document.getElementById('swapCurrencies');
+        const convertedAmount = document.getElementById('convertedAmount');
+        const exchangeRate = document.getElementById('exchangeRate');
+        const fromCode = document.getElementById('fromCode');
+        const toCode = document.getElementById('toCode');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+        const error = document.getElementById('error');
+
+        const cryptoPrices = {
+            BTC: 97245.32,
+            ETH: 3142.87,
+            BNB: 712.45,
+            SOL: 236.18,
+            XRP: 3.12,
+            DOGE: 0.3842,
+            ADA: 1.05,
+            AVAX: 42.50,
+            DOT: 8.75,
+            MATIC: 0.52
+        };
+
+        const fiatRates = {
+            USD: 1,
+            EUR: 0.92,
+            GBP: 0.79
+        };
+
+        function getCryptoPrice(crypto) {
+            return cryptoPrices[crypto] || 0;
+        }
+
+        function getFiatRate(fiat) {
+            return fiatRates[fiat] || 1;
+        }
+
+        function isCrypto(code) {
+            return code in cryptoPrices;
+        }
+
+        function convertCurrency() {
+            const from = fromCurrency.value;
+            const to = toCurrency.value;
+            const amount = parseFloat(amountInput.value) || 0;
+
+            if (amount <= 0) {
+                convertedAmount.textContent = '—';
+                return;
+            }
+
+            loading.classList.add('active');
+            result.style.display = 'none';
+            error.classList.remove('active');
+
+            setTimeout(() => {
+                try {
+                    let usdValue;
+
+                    if (isCrypto(from)) {
+                        usdValue = amount * getCryptoPrice(from);
+                    } else {
+                        usdValue = amount * getFiatRate(from);
+                    }
+
+                    let convertedValue;
+                    if (isCrypto(to)) {
+                        convertedValue = usdValue / getCryptoPrice(to);
+                    } else {
+                        convertedValue = usdValue * getFiatRate(to);
+                    }
+
+                    const displayValue = isCrypto(to) 
+                        ? convertedValue.toFixed(8)
+                        : convertedValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+                    const rate = isCrypto(to)
+                        ? (usdValue / convertedValue).toFixed(2)
+                        : (usdValue / amount).toFixed(2);
+
+                    convertedAmount.textContent = isCrypto(to) 
+                        ? `${displayValue} ${to}`
+                        : `$${displayValue}`;
+
+                    exchangeRate.textContent = rate;
+                    fromCode.textContent = from;
+                    toCode.textContent = to;
+
+                    result.style.display = 'block';
+                } catch (e) {
+                    error.textContent = 'Failed to calculate exchange rate. Please try again.';
+                    error.classList.add('active');
+                }
+                loading.classList.remove('active');
+            }, 300);
+        }
+
+        fromCurrency.addEventListener('change', convertCurrency);
+        toCurrency.addEventListener('change', convertCurrency);
+        amountInput.addEventListener('input', convertCurrency);
+
+        swapBtn.addEventListener('click', () => {
+            const temp = fromCurrency.value;
+            fromCurrency.value = toCurrency.value;
+            toCurrency.value = temp;
+            convertCurrency();
+        });
+
+        convertCurrency();
 
         // Mobile menu functionality
         const menuToggle = document.getElementById('menuToggle');
