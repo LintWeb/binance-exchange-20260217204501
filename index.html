@@ -3,9 +3,898 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>binance-exchange-20260217204501</title>
+    <title>CryptoExchange - Buy & Sell Cryptocurrency</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f0b90b;
+            --primary-dark: #d4a000;
+            --dark-bg: #0b0e11;
+            --dark-secondary: #1e2126;
+            --dark-tertiary: #2a2e37;
+            --text-primary: #eaecef;
+            --text-secondary: #848e9c;
+            --success: #0ecb81;
+            --danger: #f6465d;
+            --border: #2a2e37;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--dark-secondary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--dark-bg);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--dark-bg);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 400px;
+            height: 100vh;
+            background: var(--dark-secondary);
+            z-index: 200;
+            transition: right 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu nav {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .mobile-menu nav a {
+            font-size: 18px;
+            padding: 10px 0;
+            width: 100%;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 150;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-secondary) 100%);
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(240, 185, 11, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero .btn {
+            padding: 15px 40px;
+            font-size: 16px;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--dark-secondary);
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Market Section */
+        .market {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .market-card {
+            background: var(--dark-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .market-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .market-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .market-pair {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .market-pair img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .market-pair span {
+            font-weight: 600;
+        }
+
+        .market-price {
+            text-align: right;
+        }
+
+        .market-price .price {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .market-price .change {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .change.positive {
+            color: var(--success);
+        }
+
+        .change.negative {
+            color: var(--danger);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: var(--dark-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: rgba(240, 185, 11, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-secondary) 100%);
+        }
+
+        .cta h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-secondary);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: var(--text-secondary);
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-bottom p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav, .header-actions {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .stat-item h3 {
+                font-size: 24px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Blank white page -->
+    <header>
+        <div class="container header-inner">
+            <a href="#" class="logo">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="20" fill="#F0B90B"/>
+                    <path d="M20 8L28 14V26L20 32L12 26V14L20 8Z" fill="#0B0E11"/>
+                    <path d="M20 14L24 17V23L20 26L16 23V17L20 14Z" fill="#F0B90B"/>
+                </svg>
+                CryptoExchange
+            </a>
+            <nav>
+                <a href="#markets">Markets</a>
+                <a href="#features">Features</a>
+                <a href="#earn">Earn</a>
+                <a href="#learn">Learn</a>
+                <a href="#about">About Us</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-outline">Log In</button>
+                <button class="btn btn-primary">Sign Up</button>
+            </div>
+            <button class="hamburger" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <a href="#" class="logo">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="20" fill="#F0B90B"/>
+                    <path d="M20 8L28 14V26L20 32L12 26V14L20 8Z" fill="#0B0E11"/>
+                    <path d="M20 14L24 17V23L20 26L16 23V17L20 14Z" fill="#F0B90B"/>
+                </svg>
+                CryptoExchange
+            </a>
+            <button class="close-btn" id="closeBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav>
+            <a href="#markets">Markets</a>
+            <a href="#features">Features</a>
+            <a href="#earn">Earn</a>
+            <a href="#learn">Learn</a>
+            <a href="#about">About Us</a>
+        </nav>
+        <div class="header-actions" style="margin-top: 30px; display: flex; flex-direction: column;">
+            <button class="btn btn-outline" style="width: 100%; margin-bottom: 10px;">Log In</button>
+            <button class="btn btn-primary" style="width: 100%;">Sign Up</button>
+        </div>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-content">
+                <h1>Buy & Sell <span>Crypto</span> Instantly</h1>
+                <p>The world's leading cryptocurrency exchange with secure trading, competitive fees, and lightning-fast execution.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Get Started</button>
+                    <button class="btn btn-outline">View Markets</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3>$50B+</h3>
+                        <p>Quarterly Trading Volume</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>200+</h3>
+                        <p>Countries Supported</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>150M+</h3>
+                        <p>Registered Users</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>0.10%</h3>
+                        <p>Trading Fee</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="market" id="markets">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Popular Markets</h2>
+                    <a href="#" class="btn btn-outline">View All Markets</a>
+                </div>
+                <div class="market-grid">
+                    <div class="market-card">
+                        <div class="market-card-header">
+                            <div class="market-pair">
+                                <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%22%23F7931A%22/></svg>'">
+                                <span>BTC/USDT</span>
+                            </div>
+                            <div class="market-price">
+                                <div class="price">$97,245.32</div>
+                                <div class="change positive">+2.45%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-card-header">
+                            <div class="market-pair">
+                                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%236271A9%22/></svg>'">
+                                <span>ETH/USDT</span>
+                            </div>
+                            <div class="market-price">
+                                <div class="price">$3,142.87</div>
+                                <div class="change positive">+1.82%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-card-header">
+                            <div class="market-pair">
+                                <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png" alt="BNB" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%23F3BA2F%22/></svg>'">
+                                <span>BNB/USDT</span>
+                            </div>
+                            <div class="market-price">
+                                <div class="price">$712.45</div>
+                                <div class="change negative">-0.54%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-card-header">
+                            <div class="market-pair">
+                                <img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%239940FF%22/></svg>'">
+                                <span>SOL/USDT</span>
+                            </div>
+                            <div class="market-price">
+                                <div class="price">$236.18</div>
+                                <div class="change positive">+5.67%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-card-header">
+                            <div class="market-pair">
+                                <img src="https://cryptologos.cc/logos/ripple-xrp-logo.png" alt="XRP" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%23232659%22/></svg>'">
+                                <span>XRP/USDT</span>
+                            </div>
+                            <div class="market-price">
+                                <div class="price">$3.12</div>
+                                <div class="change positive">+3.21%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-card">
+                        <div class="market-card-header">
+                            <div class="market-pair">
+                                <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png" alt="Dogecoin" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%23C2A633%22/></svg>'">
+                                <span>DOGE/USDT</span>
+                            </div>
+                            <div class="market-price">
+                                <div class="price">$0.3842</div>
+                                <div class="change positive">+4.12%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Why Choose Us</h2>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Secure Trading</h3>
+                        <p>Industry-leading security with multi-tier architecture, cold wallet storage, and 24/7 monitoring to protect your assets.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Fast Execution</h3>
+                        <p>High-performance matching engine capable of processing millions of transactions per second with minimal latency.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h3>Low Fees</h3>
+                        <p>Competitive trading fees starting from 0.1% with discounts for high-volume traders and BNB holdings.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3>Global Access</h3>
+                        <p>Available in over 200 countries with support for multiple languages and local payment methods.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Mobile App</h3>
+                        <p>Trade anywhere with our award-winning mobile app available on iOS and Android with full functionality.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>24/7 Support</h3>
+                        <p>Dedicated customer support team available around the clock to assist you with any questions or issues.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta" id="about">
+            <div class="container">
+                <h2>Start Your Crypto Journey Today</h2>
+                <p>Join millions of users worldwide and discover the future of finance.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary">Create Free Account</button>
+                    <button class="btn btn-outline">Contact Sales</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>About Us</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Fees</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Products</h4>
+                    <ul>
+                        <li><a href="#">Spot Trading</a></li>
+                        <li><a href="#">Futures Trading</a></li>
+                        <li><a href="#">Earn</a></li>
+                        <li><a href="#">NFT Marketplace</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright <span id="currentYear"></span> CryptoExchange. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Mobile menu functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const closeBtn = document.getElementById('closeBtn');
+
+        function openMenu() {
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        mobileOverlay.addEventListener('click', closeMenu);
+
+        // Close menu on link click
+        document.querySelectorAll('.mobile-menu nav a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // Keyboard accessibility
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+    </script>
 </body>
 </html>
